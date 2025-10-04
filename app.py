@@ -26,40 +26,40 @@ def extract_article_content(url):
         }
         response = requests.get(url, headers=headers, timeout=3)  # Reduced to 3 seconds
         response.raise_for_status()
-        
+
         soup = BeautifulSoup(response.content, 'html.parser')
-        
+
         # Remove script and style elements
         for script in soup(["script", "style", "nav", "footer", "header"]):
             script.decompose()
-        
+
         # Try to find article content
         article_text = ""
-        
+
         # Common article selectors
         article_selectors = [
-            'article', '.article-content', '.post-content', 
+            'article', '.article-content', '.post-content',
             '.entry-content', '.article-body', 'main'
         ]
-        
+
         for selector in article_selectors:
             article = soup.select_one(selector)
             if article:
                 article_text = article.get_text(separator=' ', strip=True)
                 break
-        
+
         # Fallback to paragraphs
         if not article_text:
             paragraphs = soup.find_all('p')
             article_text = ' '.join([p.get_text(strip=True) for p in paragraphs])
-        
+
         # Get title
         title = soup.find('title')
         title_text = title.get_text(strip=True) if title else ""
-        
+
         # Clean text
         article_text = re.sub(r'\s+', ' ', article_text).strip()
-        
+
         return {
             'title': title_text,
             'content': article_text[:5000],  # Limit content length
@@ -72,22 +72,22 @@ def extract_article_content(url):
 # Helper function to analyze text credibility
 def analyze_text_credibility(text, headline=""):
     """Analyze text for fake news indicators using heuristics and patterns"""
-    
+
     # Combine headline and text
     full_text = f"{headline} {text}".lower()
-    
+
     # High-risk sensational words (weight: 2 points each)
     high_risk_words = [
         'shocking', 'unbelievable', 'miracle', 'secret', 'exposed',
         'scandal', 'conspiracy', 'bombshell', 'explosive', 'leaked'
     ]
-    
+
     # Medium-risk sensational words (weight: 1 point each)
     medium_risk_words = [
         'breaking', 'urgent', 'alert', 'exclusive', 'revealed',
         'truth', 'hidden', 'banned', 'censored', 'forbidden'
     ]
-    
+
     # Clickbait patterns (weight: 3 points each - very strong indicator)
     clickbait_patterns = [
         r'you wo?n[\'t]? believe',  # Matches "won't", "wont", "won t"
@@ -101,7 +101,7 @@ def analyze_text_credibility(text, headline=""):
         r'the truth about',
         r'will blow your mind'
     ]
-    
+
     # Credibility indicators (positive signals)
     credibility_indicators = [
         'study shows', 'research indicates', 'according to',
@@ -109,30 +109,30 @@ def analyze_text_credibility(text, headline=""):
         'university', 'institute', 'professor', 'peer-reviewed',
         'journal', 'scientists', 'researchers found'
     ]
-    
+
     # Calculate scores with weights
     high_risk_score = sum(2 for word in high_risk_words if word in full_text)
     medium_risk_score = sum(1 for word in medium_risk_words if word in full_text)
     clickbait_score = sum(3 for pattern in clickbait_patterns if re.search(pattern, full_text))
     credibility_score = sum(1 for indicator in credibility_indicators if indicator in full_text)
-    
+
     # Check for excessive punctuation (weight: 2 points each)
     excessive_punctuation = len(re.findall(r'[!?]{2,}', full_text + headline))
     punctuation_score = excessive_punctuation * 2
-    
+
     # Check for all caps words (shouting) (weight: 1.5 points each)
     caps_words = len(re.findall(r'\b[A-Z]{3,}\b', headline + " " + text))
     caps_score = int(caps_words * 1.5)
-    
+
     # Total negative score (weighted)
     # Don't count caps if there are strong credibility indicators (legitimate breaking news)
     if credibility_score >= 2:
         # Reduce caps penalty for credible sources
         caps_score = int(caps_score * 0.3)
-    
+
     negative_score = high_risk_score + medium_risk_score + clickbait_score + punctuation_score + caps_score
     positive_score = credibility_score
-    
+
     # Improved scoring algorithm with credibility override
     # If strong credibility indicators exist, be more lenient
     if positive_score >= 3:
@@ -177,11 +177,11 @@ def analyze_text_credibility(text, headline=""):
         else:
             credibility = 'partial'
             confidence = 55
-    
+
     # Count raw occurrences for display
     sensational_count = sum(1 for word in high_risk_words + medium_risk_words if word in full_text)
     clickbait_count = sum(1 for pattern in clickbait_patterns if re.search(pattern, full_text))
-    
+
     return {
         'credibility': credibility,
         'confidence': round(confidence, 1),
@@ -197,7 +197,7 @@ def analyze_text_credibility(text, headline=""):
 # Helper function to check domain reputation
 def check_domain_reputation(domain):
     """Check if domain is known for fake news or credible journalism"""
-    
+
     # Known credible sources
     credible_domains = [
         'bbc.com', 'reuters.com', 'apnews.com', 'npr.org',
@@ -205,50 +205,60 @@ def check_domain_reputation(domain):
         'cnn.com', 'bloomberg.com', 'wsj.com', 'economist.com',
         'nature.com', 'science.org', 'scientificamerican.com'
     ]
-    
+
     # Known unreliable sources (simplified list)
     unreliable_domains = [
         'fake', 'hoax', 'satire', 'parody', 'conspiracy'
     ]
-    
+
     domain_lower = domain.lower()
-    
+
     # Check credible
     for credible in credible_domains:
         if credible in domain_lower:
             return {'reputation': 'credible', 'score': 90}
-    
+
     # Check unreliable
     for unreliable in unreliable_domains:
         if unreliable in domain_lower:
             return {'reputation': 'unreliable', 'score': 10}
-    
+
     # Unknown domain
     return {'reputation': 'unknown', 'score': 50}
 
 @app.route('/api/verify', methods=['POST', 'OPTIONS'])
 def verify_news():
     """Main endpoint to verify news"""
+    
+    # Manually handle the OPTIONS preflight request
+    if request.method == 'OPTIONS':
+        response = jsonify({})
+        response.headers.add('Access-Control-Allow-Origin', 'https://spy-in-shadows.github.io')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
+        return response
+
+    # Handle the actual POST request
     try:
         data = request.get_json()
-        
+
         news_url = data.get('url', '').strip()
         news_headline = data.get('headline', '').strip()
         news_image = data.get('image')  # Base64 encoded image
-        
+
         results = {
             'timestamp': datetime.now().isoformat(),
             'analysis': {}
         }
-        
+
         # Analyze URL if provided
         if news_url:
             article_data = extract_article_content(news_url)
-            
+
             if 'error' not in article_data:
                 # Check if content is empty or too short (likely no real content found)
                 content_length = len(article_data['content'].strip())
-                
+
                 if content_length < 50:
                     # No meaningful content found - mark as not true
                     results['analysis']['url'] = {
@@ -273,14 +283,14 @@ def verify_news():
                         article_data['content'],
                         article_data['title']
                     )
-                    
+
                     # Check domain
                     domain_check = check_domain_reputation(article_data['domain'])
-                    
+
                     # Combine analyses
                     final_credibility = text_analysis['credibility']
                     final_confidence = text_analysis['confidence']
-                    
+
                     # Adjust based on domain reputation
                     if domain_check['reputation'] == 'credible':
                         if final_credibility == 'false':
@@ -289,7 +299,7 @@ def verify_news():
                     elif domain_check['reputation'] == 'unreliable':
                         final_credibility = 'false'
                         final_confidence = max(final_confidence, 75)
-                    
+
                     results['analysis']['url'] = {
                         'credibility': final_credibility,
                         'confidence': round(final_confidence, 1),
@@ -318,11 +328,11 @@ def verify_news():
                     'summary': 'Unable to verify this information from trusted sources.',
                     'reason': f'Could not access or verify the content. {article_data.get("error", "Unknown error")}'
                 }
-        
+
         # Analyze headline if provided
         if news_headline:
             headline_analysis = analyze_text_credibility("", news_headline)
-            
+
             results['analysis']['headline'] = {
                 'credibility': headline_analysis['credibility'],
                 'confidence': round(headline_analysis['confidence'], 1),
@@ -330,7 +340,7 @@ def verify_news():
                 'indicators': headline_analysis['indicators'],
                 'reason': generate_reason(headline_analysis['credibility'], headline_analysis['indicators'])
             }
-        
+
         # Handle image if provided
         if news_image:
             results['analysis']['image'] = {
@@ -339,7 +349,7 @@ def verify_news():
                 'credibility': 'unknown',
                 'confidence': 0
             }
-        
+
         # Determine overall result
         if 'url' in results['analysis']:
             overall = results['analysis']['url']
@@ -347,14 +357,14 @@ def verify_news():
             overall = results['analysis']['headline']
         else:
             return jsonify({'error': 'No valid input provided'}), 400
-        
+
         results['overall'] = {
             'credibility': overall['credibility'],
             'confidence': overall['confidence']
         }
-        
+
         return jsonify(results)
-    
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -370,34 +380,35 @@ def generate_summary(content, credibility):
 def generate_reason(credibility, indicators):
     """Generate reason for the credibility assessment"""
     reasons = []
-    
+
     if indicators['sensational_words'] > 2:
         reasons.append("Contains excessive sensational language")
-    
+
     if indicators['clickbait_patterns'] > 0:
         reasons.append("Uses clickbait-style headlines")
-    
+
     if indicators['excessive_punctuation'] > 0:
         reasons.append("Uses excessive punctuation for emphasis")
-    
+
     if indicators['caps_words'] > 2:
         reasons.append("Contains excessive capitalization")
-    
+
     if indicators['credibility_indicators'] > 2:
         reasons.append("References credible sources and research")
-    
+
     if not reasons:
         if credibility == 'true':
             reasons.append("Appears to follow journalistic standards")
         else:
             reasons.append("Lacks clear credibility indicators")
-    
+
     return "; ".join(reasons)
 
-@app.route('/api/health', methods=['GET'])
+@app.route('/api/health', methods=['GET', 'OPTIONS'])
 def health_check():
     """Health check endpoint"""
-    return jsonify({'status': 'healthy', 'version': '2.0-TEST'})
+    # Reverted the test version back to the original for clean code
+    return jsonify({'status': 'healthy', 'service': 'Fake News Detector API'})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
