@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = 'https://prompt-pandemic-restinpython.onrender.com';
+const API_BASE_URL = 'https://prompt-pandemic-restinpython.onrender.com/api';
 
 // Get DOM elements
 const newsForm = document.getElementById('news-form');
