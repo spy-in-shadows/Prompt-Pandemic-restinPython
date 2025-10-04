@@ -397,7 +397,7 @@ def generate_reason(credibility, indicators):
 @app.route('/api/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
-    return jsonify({'status': 'healthy', 'service': 'Fake News Detector API'})
+    return jsonify({'status': 'healthy', 'version': '2.0-TEST'})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
