@@ -11,7 +11,7 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://spy-in-shadows.github.io"}})
+CORS(app, resources={r"/api/*": {"origins": "https://spy-in-shadows.github.io"}})
 
 # Configuration
 UPLOAD_FOLDER = 'uploads'
@@ -226,7 +226,7 @@ def check_domain_reputation(domain):
     # Unknown domain
     return {'reputation': 'unknown', 'score': 50}
 
-@app.route('/api/verify', methods=['POST'])
+@app.route('/api/verify', methods=['POST', 'OPTIONS'])
 def verify_news():
     """Main endpoint to verify news"""
     try:
