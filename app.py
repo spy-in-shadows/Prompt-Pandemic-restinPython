@@ -11,7 +11,7 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "https://spy-in-shadows.github.io"}})
 
 # Configuration
 UPLOAD_FOLDER = 'uploads'
