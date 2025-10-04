@@ -72,30 +72,6 @@
         <p>&copy; 2025 Fact@Scope.pvt.ltd. All Rights Reserved</p>
     </footer>
 
-    <script>
-        // Placeholder for basic interactivity
-        document.getElementById('news-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Simulate result for demonstration
-            // In real implementation, call backend AI service here
-            document.getElementById('results-section').style.display = 'block';
-            document.getElementById('true-list').innerHTML = '';
-            document.getElementById('partial-list').innerHTML = '<li>Sample partially true news headline</li>';
-            document.getElementById('false-list').innerHTML = '';
-
-            document.getElementById('followup-section').style.display = 'block';
-            document.getElementById('summary-option').style.display = 'block';
-            document.getElementById('reason-option').style.display = 'none';
-            document.getElementById('output-details').innerHTML = '';
-        });
-
-        document.getElementById('show-summary').addEventListener('click', function() {
-            document.getElementById('output-details').innerHTML = '<p>Summary: This news contains some factual information but is missing key context.</p>';
-        });
-
-        document.getElementById('show-reason').addEventListener('click', function() {
-            document.getElementById('output-details').innerHTML = '<p>Reason: This news spread due to misinformation on social media.</p>';
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

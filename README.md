@@ -1,76 +1,225 @@
-# Prompt-Pandemic-restinPython
-FactScope: AI News Verifier
-FactScope is a modern, responsive web application designed to help users verify the authenticity of news articles, images, and headlines. Using a clean and intuitive interface, it simulates an AI-powered verification process to categorize news content and combat misinformation.
+# FactScope - AI-Powered Fake News Detector
 
-✨ Features
-Multi-Format Input: Users can submit a news URL, upload a news-related image, or type in a headline for verification.
+A full-stack web application that uses AI and natural language processing to detect fake news articles, verify headlines, and analyze content credibility.
 
-Categorized Results: The verification results are clearly categorized into "Fully True," "Partially True," and "Fully False" sections.
+##  Features
 
-Interactive Follow-Up:
+- **URL Analysis**: Scrapes and analyzes news articles from URLs
+- **Headline Verification**: Checks headlines for clickbait and sensational language
+- **Domain Reputation**: Evaluates source credibility
+- **AI-Powered Detection**: Uses pattern matching and heuristics to identify misinformation
+- **Confidence Scoring**: Provides percentage-based confidence levels
+- **Interactive Results**: Shows detailed analysis with follow-up options
+- **Beautiful UI**: Modern, responsive design with gradient backgrounds
 
-For "Partially True" news, users can request a summary to understand the context.
+##  Quick Start
 
-For "Fully False" news, users can request to see the potential reason for its spread.
+### 1. Install Dependencies
+```bash
+pip3 install Flask flask-cors requests beautifulsoup4 lxml Pillow
+```
 
-Stylish & Modern UI: A sleek, dark-themed design with custom fonts and smooth transitions provides a professional user experience.
+### 2. Start the Backend
+```bash
+./start_backend.sh
+```
+Or manually:
+```bash
+python3 app.py
+```
 
-Responsive Design: The layout is fully responsive and works seamlessly on desktops, tablets, and mobile devices.
+The backend will start on **http://localhost:5001**
 
-🛠️ Technologies Used
-Frontend: HTML5, CSS3
+### 3. Open the Frontend
+Simply open `index.html` in your web browser:
+- Double-click the file, or
+- Right-click → Open with → Browser
 
-Fonts:
+##  How to Use
 
-'Logo': Custom font using NewYork PERSONAL USE.otf by Artem Nevsky.
+1. **Enter News Information**:
+   - Paste a news article URL
+   - Type a headline to verify
+   - Upload a news image (optional)
 
-'Fonk': Custom font using Bitcount Prop Single Ink (a.ttf).
+2. **Click "Verify News"**:
+   - The system analyzes the content
+   - Results appear in three categories:
+     -  **Fully True** (Green)
+     -  **Partially True** (Orange)
+     -  **Fully False** (Red)
 
-Space Grotesk: Imported from Google Fonts for headings.
+3. **View Details**:
+   - Click "Show Summary" for context
+   - Click "Show Reason" to understand the analysis
 
-Libre Franklin: Imported from Google Fonts.
+##  Technical Details
 
-📂 Project Structure
-.
-├── index.html          # The main HTML file for the application structure.
-├── style.css           # The CSS file for all styling and layout.
-├── a.ttf               # Font file for 'Fonk' (Bitcount Prop Single Ink).
-├── NewYork PERSONAL USE.otf # Font file for 'Logo'.
-└── png.png             # Background pattern image.
-🚀 Getting Started
-This is a frontend-only project. No special installation is required.
+### Backend (Flask API)
+- **Framework**: Flask with CORS support
+- **Web Scraping**: BeautifulSoup4 for content extraction
+- **Analysis Engine**: Pattern matching and heuristic-based detection
+- **Endpoints**:
+  - `POST /api/verify` - Verify news content
+  - `GET /api/health` - Health check
 
-Clone the repository:
+### Frontend
+- **HTML5** with semantic markup
+- **CSS3** with modern gradients and animations
+- **Vanilla JavaScript** for API integration
+- **Responsive Design** for all devices
 
-Bash
+### Detection Algorithm
+The system analyzes multiple factors:
+- Sensational language patterns
+- Clickbait indicators
+- Credible source references
+- Domain reputation
+- Writing style analysis
+- Punctuation and capitalization patterns
 
-git clone <your-repository-link>
-Navigate to the project directory:
+##  Project Structure
 
-Bash
+```
+Prompt-Pandemic-restinPython/
+├── app.py                    # Flask backend server
+├── script.js                 # Frontend JavaScript
+├── index.html                # Main HTML page
+├── style.css                 # Styling
+├── requirements.txt          # Python dependencies
+├── start_backend.sh          # Quick start script
+├── SETUP_INSTRUCTIONS.md     # Detailed setup guide
+└── README.md                 # This file
+```
 
-cd <repository-name>
-Open the application:
-Simply open the index.html file in your favorite web browser.
+##  Testing
 
-📝 How It Works
-The user lands on the homepage and is presented with a form.
+Test the API directly:
+```bash
+curl -X POST http://localhost:5001/api/verify \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://www.bbc.com/news/example", "headline": "Breaking News"}'
+```
 
-They can choose to input a news URL, upload an image, or enter a headline.
+##  Example Usage
 
-Upon clicking "Verify News," the results section becomes visible.
+**Test with a credible source:**
+- URL: `https://www.bbc.com/news/world`
+- Expected: High credibility score
 
-The application simulates an AI analysis and places the result in the appropriate category (Fully True, Partially True, or Fully False).
+**Test with sensational headline:**
+- Headline: "You won't believe what happened next! SHOCKING!!!"
+- Expected: Low credibility, flagged as potentially false
 
-If the news is partially true or false, a "Next Steps" section appears, offering buttons to get more details like a summary or the reason for misinformation.
+##  Configuration
 
-Clicking these buttons reveals the detailed information in an output box.
+To change the port, edit `app.py`:
+```python
+app.run(debug=True, port=5001)  # Change port here
+```
 
-Note: The current implementation is a frontend prototype. The verification logic in index.html is a placeholder to demonstrate the UI flow. A full implementation would require a backend service with an AI/ML model to process the inputs and return actual verification results.
+And update `script.js`:
+```javascript
+const API_BASE_URL = 'http://localhost:5001/api';  // Match the port
+```
 
-⚖️ Credits & License
-NewYork Font: Copyright (c) 2020 by Artem Nevsky. Free for personal use.
+##  Credibility Indicators
 
-Bitcount Prop Single Ink Font: Copyright 2024 The Bitcount Project Authors, licensed under the SIL Open Font License.
+**Positive Indicators:**
+- References to studies and research
+- Credible source citations
+- Balanced reporting
+- Known reputable domains
 
-Background Image: The png.png file provides the background pattern.
+**Negative Indicators:**
+- Excessive sensational language
+- Clickbait patterns
+- Lack of sources
+- Excessive punctuation/caps
+- Unknown or suspicious domains
+
+##  Limitations
+
+- Heuristic-based (not deep learning)
+- Limited domain reputation database
+- English language optimized
+- Some websites block scraping
+- Image analysis requires external APIs
+
+##  Future Enhancements
+
+- [ ] Integration with fact-checking APIs
+- [ ] Machine learning model training
+- [ ] OCR for image text extraction
+- [ ] Reverse image search
+- [ ] Multi-language support
+- [ ] User feedback system
+- [ ] Historical tracking database
+- [ ] Browser extension
+
+##  API Documentation
+
+### POST /api/verify
+
+**Request:**
+```json
+{
+  "url": "https://example.com/article",
+  "headline": "News headline",
+  "image": "base64_encoded_image"
+}
+```
+
+**Response:**
+```json
+{
+  "overall": {
+    "credibility": "partial",
+    "confidence": 75.0
+  },
+  "analysis": {
+    "url": {
+      "credibility": "partial",
+      "confidence": 75.0,
+      "title": "Article Title",
+      "domain": "example.com",
+      "domain_reputation": "unknown",
+      "indicators": {...},
+      "summary": "Analysis summary",
+      "reason": "Detailed reasoning"
+    }
+  }
+}
+```
+
+##  Troubleshooting
+
+**Backend not starting:**
+- Check if port 5001 is available
+- Ensure all dependencies are installed
+- Check Python version (3.8+)
+
+**CORS errors:**
+- Make sure backend is running
+- Check browser console for details
+- Verify API_BASE_URL in script.js
+
+**Article extraction fails:**
+- Some sites block scraping
+- Try different news sources
+- Check internet connection
+
+##  License
+
+ 2025 Fact@Scope.pvt.ltd All Rights Reserved
+
+##  Support
+
+For issues or questions:
+1. Check the console logs
+2. Review SETUP_INSTRUCTIONS.md
+3. Verify backend is running: `curl http://localhost:5001/api/health`
+
+---
+
+**Built with  using Flask, JavaScript, and AI**inPython
