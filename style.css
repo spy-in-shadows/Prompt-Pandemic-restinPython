@@ -1,0 +1,308 @@
+@font-face {
+    font-family: 'Logo';
+    src: url("./NewYork PERSONAL USE.otf") format("opentype");
+}
+@font-face {
+    font-family: 'Fonk';
+    src: url("./a.ttf") format("truetype");
+}
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single+Ink:wght@100..900&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    background: 
+        linear-gradient(135deg, rgb(222, 184, 135, 0.9) 0%, rgba(0, 1, 10, 0.9) 100%),
+        url("./png.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: #222;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Hide the default file input field, show only the button */
+form input[type="file"] {
+    width: auto;
+    background: transparent;
+    color: transparent;
+    border: none;
+    padding: 0;
+}
+form input[type="file"]::-webkit-file-upload-button {
+    padding: 0.7rem 1.5rem;
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(58,123,213,0.08);
+    transition: background 0.2s, transform 0.2s;
+}
+
+form input[type="file"]::-webkit-file-upload-button:hover {
+    background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+    transform: translateY(-1px) scale(1.04);
+}
+
+form input[type="file"]::file-selector-button {
+    padding: 0.7rem 1.5rem;
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(58,123,213,0.08);
+    transition: background 0.2s, transform 0.2s;
+}
+
+form input[type="file"]::file-selector-button:hover {
+    background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+    transform: translateY(-1px) scale(1.04);
+}
+header {
+    background: linear-gradient(90deg, #0b0b20 0%, #1b1f40 100%);
+    color: #fff;
+    padding: 2rem 0 1rem 0;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(58,123,213,0.08);
+}
+
+header h1 span{
+    color: rgb(240, 8, 8);
+    font-family: 'Logo';
+}
+header h1 {
+    font-family: 'Space Grotesk';
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+header p {
+    font-size: 1.2rem;
+    opacity: 0.95;
+    font-family: 'Baloo Bhai 2';
+}
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 700px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 18px;
+    padding: 2rem 2.5rem;
+}
+
+section {
+    margin-bottom: 2.5rem;
+}
+
+#input-section h2,
+#results-section h2,
+#followup-section h2 {
+    font-size: 1.5rem;
+    background: linear-gradient(0deg, #0400ff 0%, #000000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: underline;
+    color: transparent;
+    margin-bottom: 1rem;
+    font-weight: bolder;
+}
+
+form {
+    background-color: #101a3a;
+    padding: 2rem 2.5rem;
+    border-radius: 18px;
+    box-shadow: 0px 20px 20px 0px;
+}
+
+main {
+    background: transparent;
+    padding: 0;
+}
+form label {
+    font-family: 'Fonk';
+    display: block;
+    margin-top: 1.2rem;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: #222;
+}
+
+form input[type="url"],
+form input[type="text"],
+form input[type="file"] {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid #dbeafe;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f7fafc;
+    transition: border-color 0.2s;
+}
+
+form input[type="url"]:focus,
+form input[type="text"]:focus {
+    border-color: #3a7bd5;
+    outline: none;
+}
+
+form button[type="submit"] {
+    margin-top: 1.5rem;
+    padding: 0.8rem 2.2rem;
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(58,123,213,0.10);
+    transition: background 0.2s, transform 0.2s;
+}
+
+form button[type="submit"]:hover {
+    background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+    transform: translateY(-2px) scale(1.03);
+}
+
+#results-section {
+    display: none;
+    margin-top: 2rem;
+}
+
+#results-section > div {
+    margin-bottom: 1.2rem;
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    background: #f7fafc;
+    box-shadow: 0 1px 4px rgba(58,123,213,0.04);
+}
+
+#true-news h3 {
+    color: #22c55e;
+    font-weight: 700;
+}
+
+#partial-news h3 {
+    color: #f59e42;
+    font-weight: 700;
+}
+
+#false-news h3 {
+    color: #ef4444;
+    font-weight: 700;
+}
+
+ul {
+    margin-top: 0.5rem;
+    padding-left: 1.2rem;
+}
+
+li {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+#followup-section {
+    display: none;
+    background: #f3f7fa;
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    box-shadow: 0 1px 4px rgba(58,123,213,0.04);
+}
+
+#summary-option,
+#reason-option {
+    margin-bottom: 1rem;
+}
+
+#summary-option p,
+#reason-option p {
+    font-size: 1.05rem;
+    color: #222;
+    margin-bottom: 0.5rem;
+}
+
+#show-summary,
+#show-reason {
+    padding: 0.6rem 1.5rem;
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(58,123,213,0.08);
+    transition: background 0.2s, transform 0.2s;
+}
+
+#show-summary:hover,
+#show-reason:hover {
+    background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+    transform: translateY(-1px) scale(1.04);
+}
+
+#output-details {
+    margin-top: 1rem;
+    font-size: 1.05rem;
+    color: #222;
+    background: #e9eafc;
+    border-radius: 7px;
+    padding: 0.8rem 1.2rem;
+    box-shadow: 0 1px 4px rgba(58,123,213,0.04);
+}
+
+footer {
+    font-family: 'Fonk';
+    background: black;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    box-shadow: 0 -2px 8px rgba(58,123,213,0.08);
+    margin-top: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+    main {
+        padding: 1.2rem 0.7rem;
+        max-width: 98vw;
+    }
+}
+
+@media (max-width: 500px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    main {
+        padding: 0.7rem 0.2rem;
+    }
+    #input-section h2,
+    #results-section h2,
+    #followup-section h2 {
+        font-size: 1.1rem;
+    }
+}

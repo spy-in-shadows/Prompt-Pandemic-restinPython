@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI News Verifier</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Fact<span>Scope</span></h1>
+        <p>Check the authenticity of news articles, images, or headlines using AI.</p>
+    </header>
+
+    <main>
+        <section id="input-section">
+            <h2>Submit News for Verification:</h2>
+            <form id="news-form">
+                <label for="news-url">News URL:</label>
+                <input type="url" id="news-url" name="news-url" placeholder="Paste news URL">
+
+                <label for="news-image">News Image:</label>
+                <input type="file" id="news-image" name="news-image" accept="image/*">
+
+                <label for="news-headline">News Headline:</label>
+                <input type="text" id="news-headline" name="news-headline" placeholder="Enter headline">
+
+                <button type="submit">Verify News</button>
+            </form>
+        </section>
+
+        <section id="results-section">
+            <h2>Verification Results</h2>
+            <div id="true-news">
+                <h3 style="color:green;">Fully True</h3>
+                <ul id="true-list">
+                    <!-- True news items will appear here -->
+                </ul>
+            </div>
+            <div id="partial-news">
+                <h3 style="color:orange;">Partially True</h3>
+                <ul id="partial-list">
+                    <!-- Partially true news items will appear here -->
+                </ul>
+            </div>
+            <div id="false-news">
+                <h3 style="color:red;">Fully False</h3>
+                <ul id="false-list">
+                    <!-- False news items will appear here -->
+                </ul>
+            </div>
+        </section>
+
+        <section id="followup-section" style="display:none;">
+            <h2>Next Steps</h2>
+            <div id="summary-option" style="display:none;">
+                <p>This news is partially true. Would you like to see a summary?</p>
+                <button id="show-summary">Show Summary</button>
+            </div>
+            <div id="reason-option" style="display:none;">
+                <p>This news is fully false. Would you like to know the reason for its spread?</p>
+                <button id="show-reason">Show Reason</button>
+            </div>
+            <div id="output-details">
+                <!-- Summary or reason will be displayed here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Fact@Scope.pvt.ltd All Rights Reserved</p>
+    </footer>
+
+    <script>
+        // Placeholder for basic interactivity
+        document.getElementById('news-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Simulate result for demonstration
+            // In real implementation, call backend AI service here
+            document.getElementById('results-section').style.display = 'block';
+            document.getElementById('true-list').innerHTML = '';
+            document.getElementById('partial-list').innerHTML = '<li>Sample partially true news headline</li>';
+            document.getElementById('false-list').innerHTML = '';
+
+            document.getElementById('followup-section').style.display = 'block';
+            document.getElementById('summary-option').style.display = 'block';
+            document.getElementById('reason-option').style.display = 'none';
+            document.getElementById('output-details').innerHTML = '';
+        });
+
+        document.getElementById('show-summary').addEventListener('click', function() {
+            document.getElementById('output-details').innerHTML = '<p>Summary: This news contains some factual information but is missing key context.</p>';
+        });
+
+        document.getElementById('show-reason').addEventListener('click', function() {
+            document.getElementById('output-details').innerHTML = '<p>Reason: This news spread due to misinformation on social media.</p>';
+        });
+    </script>
+</body>
+</html>
